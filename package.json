@@ -1,0 +1,95 @@
+{
+    "name": "dokploy-status",
+    "publisher": "dokploy",
+    "displayName": "Dokploy Status",
+    "description": "Monitor your Dokploy deployment status directly from VS Code",
+    "version": "0.0.5",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/skypedumont/dokploy-status-extension"
+    },
+    "keywords": [
+        "dokploy",
+        "deployment",
+        "status",
+        "devops",
+        "monitoring"
+    ],
+    "engines": {
+        "vscode": "^1.80.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "icon": "media/icon.png",
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "configuration": {
+            "title": "Dokploy Status",
+            "properties": {
+                "dokployStatus.apiUrl": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Dokploy Base URL (e.g. https://your-dokploy-instance.com)"
+                },
+                "dokployStatus.apiKey": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Dokploy API Key (generate in Settings → Profile → API/CLI)"
+                }
+            }
+        },
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "dokploy-explorer",
+                    "title": "Dokploy",
+                    "icon": "media/icon.svg"
+                }
+            ]
+        },
+        "views": {
+            "dokploy-explorer": [
+                {
+                    "id": "dokploy.apps",
+                    "name": "Projects & Applications",
+                    "type": "tree"
+                }
+            ]
+        },
+        "commands": [
+            {
+                "command": "dokploy.refresh",
+                "title": "Refresh Dokploy Status",
+                "icon": "$(refresh)"
+            },
+            {
+                "command": "dokploy.openLog",
+                "title": "Open in Dokploy Dashboard"
+            }
+        ],
+        "menus": {
+            "view/title": [
+                {
+                    "command": "dokploy.refresh",
+                    "when": "view == dokploy.apps",
+                    "group": "navigation"
+                }
+            ]
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./"
+    },
+    "devDependencies": {
+        "@types/node": "^18.0.0",
+        "@types/vscode": "^1.80.0",
+        "typescript": "^5.0.0"
+    }
+}
