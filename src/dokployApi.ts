@@ -19,6 +19,7 @@ export interface DokployApplication {
     applicationId: string;
     name: string;
     applicationStatus: 'done' | 'error' | 'running' | 'idle' | string;
+    environmentId?: string;
 }
 
 export class DokployApi {
@@ -85,6 +86,10 @@ export class DokployApi {
             if (project.environments && Array.isArray(project.environments)) {
                 for (const env of project.environments) {
                     if (env.applications && Array.isArray(env.applications)) {
+                        // Tag each app with its environmentId for dashboard URL
+                        for (const app of env.applications) {
+                            app.environmentId = env.environmentId;
+                        }
                         allApps.push(...env.applications);
                     }
                 }

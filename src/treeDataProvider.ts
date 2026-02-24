@@ -118,7 +118,8 @@ export class DokployAppItem extends DokployTreeItem {
     ) {
         const config = vscode.workspace.getConfiguration('dokployStatus');
         const baseUrl = (config.get<string>('apiUrl') || '').replace(/\/+$/, '');
-        const dashboardUrl = `${baseUrl}/dashboard/project/${projectId}`;
+        const envSegment = app.environmentId ? `/environment/${app.environmentId}` : '';
+        const dashboardUrl = `${baseUrl}/dashboard/project/${projectId}${envSegment}/services/application/${app.applicationId}`;
 
         super(app.name, vscode.TreeItemCollapsibleState.None, {
             command: 'dokploy.openLog',
