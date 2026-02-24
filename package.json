@@ -7,7 +7,7 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/skypedumont/dokploy-status-extension"
+        "url": "https://github.com/skypedumont/dokploy-status-extension-vscode"
     },
     "keywords": [
         "dokploy",

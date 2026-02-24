@@ -8,7 +8,7 @@
 
 [![VS Code](https://img.shields.io/badge/VS%20Code-1.80+-007ACC?logo=visualstudiocode&logoColor=white)](https://code.visualstudio.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/Version-0.0.5-blue)](https://github.com/skypedumont/dokploy-status-extension/releases)
+[![Version](https://img.shields.io/badge/Version-0.0.5-blue)](https://github.com/skypedumont/dokploy-status-extension-vscode/releases)
 
 </div>
 
@@ -39,7 +39,7 @@
 
 ### 1. Install the Extension
 
-Download the latest `.vsix` from [Releases](https://github.com/skypedumont/dokploy-status-extension/releases) and install it:
+Download the latest `.vsix` from [Releases](https://github.com/skypedumont/dokploy-status-extension-vscode/releases) and install it:
 
 ```
 Cmd+Shift+P → Extensions: Install from VSIX...
@@ -66,7 +66,7 @@ A **Dokploy** icon appears in the Activity Bar. Expand projects to see applicati
 
 ```bash
 # Clone the repository
-git clone https://github.com/skypedumont/dokploy-status-extension.git
+git clone https://github.com/skypedumont/dokploy-status-extension-vscode.git
 cd dokploy-status-extension
 
 # Install dependencies
