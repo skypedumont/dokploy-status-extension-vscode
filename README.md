@@ -8,7 +8,7 @@
 
 [![VS Code](https://img.shields.io/badge/VS%20Code-1.80+-007ACC?logo=visualstudiocode&logoColor=white)](https://code.visualstudio.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/Version-0.0.5-blue)](https://github.com/skypedumont/dokploy-status-extension-vscode/releases)
+[![Version](https://img.shields.io/badge/Version-0.0.7-blue)](https://github.com/skypedumont/dokploy-status-extension-vscode/releases)
 
 </div>
 
@@ -19,9 +19,11 @@
 | Feature | Description |
 |---------|-------------|
 | 🗂️ **Sidebar Tree View** | Lists all projects and applications with live status icons |
+| 🚀 **Redeploy Button** | Trigger a redeploy for any app directly from the sidebar |
+| 🔴 **Error Badge** | Activity bar badge shows the number of failing deployments |
 | 📊 **Status Bar** | Shows aggregate deployment health at a glance |
 | 🔄 **Auto Refresh** | Polls for status updates every 30 seconds |
-| 🔗 **Quick Access** | Click any application to open its Dokploy dashboard |
+| 🔗 **Deep Linking** | Click any application to jump straight to its Dokploy dashboard page |
 | ⚙️ **Config Watcher** | Automatically refreshes when settings change |
 
 ### Status Icons
