@@ -50,6 +50,14 @@ export class DokployTreeDataProvider implements vscode.TreeDataProvider<DokployT
         return this.aggregateStatus;
     }
 
+    getErrorCount(): number {
+        let count = 0;
+        for (const p of this.projects) {
+            count += p.applications?.filter(app => app.applicationStatus === 'error').length || 0;
+        }
+        return count;
+    }
+
     getTreeItem(element: DokployTreeItem): vscode.TreeItem {
         return element;
     }

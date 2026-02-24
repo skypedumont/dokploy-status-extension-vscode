@@ -3,18 +3,23 @@ import { DokployTreeDataProvider } from './treeDataProvider';
 
 let statusBarItem: vscode.StatusBarItem;
 let refreshInterval: NodeJS.Timeout | undefined;
+let treeView: vscode.TreeView<any>;
 
 export function activate(context: vscode.ExtensionContext) {
-    console.log('DokPloy Status extension is now active!');
+    console.log('Dokploy Status extension is now active!');
 
-    // Initialize Tree View Data Provider
+    // Initialize Tree View with badge support
     const treeDataProvider = new DokployTreeDataProvider();
-    vscode.window.registerTreeDataProvider('dokploy.apps', treeDataProvider);
+    treeView = vscode.window.createTreeView('dokploy.apps', {
+        treeDataProvider,
+        showCollapseAll: true
+    });
+    context.subscriptions.push(treeView);
 
     // Initialize Status Bar Item
     statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
-    statusBarItem.command = 'dokploy.apps.focus'; // Focus the tree view when clicked
-    statusBarItem.text = '$(sync~spin) DokPloy: Fetching...';
+    statusBarItem.command = 'dokploy.apps.focus';
+    statusBarItem.text = '$(sync~spin) Dokploy: Fetching...';
     statusBarItem.show();
     context.subscriptions.push(statusBarItem);
 
@@ -22,6 +27,7 @@ export function activate(context: vscode.ExtensionContext) {
     const refreshCommand = vscode.commands.registerCommand('dokploy.refresh', async () => {
         await treeDataProvider.refresh();
         updateStatusBar(treeDataProvider.getAggregateStatus());
+        updateBadge(treeDataProvider);
     });
 
     const openLogCommand = vscode.commands.registerCommand('dokploy.openLog', (url: string) => {
@@ -59,22 +65,36 @@ function setupPolling(treeDataProvider: DokployTreeDataProvider) {
     refreshInterval = setInterval(async () => {
         await treeDataProvider.refresh();
         updateStatusBar(treeDataProvider.getAggregateStatus());
+        updateBadge(treeDataProvider);
     }, 30000);
+}
+
+function updateBadge(treeDataProvider: DokployTreeDataProvider) {
+    const status = treeDataProvider.getAggregateStatus();
+    const errorCount = treeDataProvider.getErrorCount();
+
+    if (status === 'unauthorized') {
+        treeView.badge = { value: 1, tooltip: 'Unauthorized — check your API Key' };
+    } else if (errorCount > 0) {
+        treeView.badge = { value: errorCount, tooltip: `${errorCount} application${errorCount > 1 ? 's' : ''} with errors` };
+    } else {
+        treeView.badge = undefined; // No badge = all good ✅
+    }
 }
 
 function updateStatusBar(status: 'ok' | 'error' | 'fetching' | 'unauthorized') {
     if (status === 'ok') {
-        statusBarItem.text = '$(pass) DokPloy: OK';
+        statusBarItem.text = '$(pass) Dokploy: OK';
         statusBarItem.tooltip = 'All applications are deployed successfully.';
     } else if (status === 'error') {
-        statusBarItem.text = '$(error) DokPloy: Error';
+        statusBarItem.text = '$(error) Dokploy: Error';
         statusBarItem.tooltip = 'One or more applications have issues.';
     } else if (status === 'unauthorized') {
-        statusBarItem.text = '$(warning) DokPloy: Unauthorized';
+        statusBarItem.text = '$(warning) Dokploy: Unauthorized';
         statusBarItem.tooltip = 'Check your API Key in settings.';
     } else {
-        statusBarItem.text = '$(sync~spin) DokPloy: Fetching...';
-        statusBarItem.tooltip = 'Fetching status from DokPloy...';
+        statusBarItem.text = '$(sync~spin) Dokploy: Fetching...';
+        statusBarItem.tooltip = 'Fetching status from Dokploy...';
     }
 }
 

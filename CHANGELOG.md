@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.6
+
+- **New:** Sidebar badge shows number of failed deployments on the activity bar icon
+- **New:** "Collapse All" button in tree view
+
 ## 0.0.5
 
 - **Fix:** Applications are now correctly loaded from Dokploy's `environments` structure

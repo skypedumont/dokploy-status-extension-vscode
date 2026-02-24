@@ -3,7 +3,7 @@
     "publisher": "dokploy",
     "displayName": "Dokploy Status",
     "description": "Monitor your Dokploy deployment status directly from VS Code",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "license": "MIT",
     "repository": {
         "type": "git",
