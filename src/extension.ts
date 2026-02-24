@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
-import { DokployTreeDataProvider } from './treeDataProvider';
+import { DokployTreeDataProvider, DokployAppItem } from './treeDataProvider';
+import { DokployApi } from './dokployApi';
 
 let statusBarItem: vscode.StatusBarItem;
 let refreshInterval: NodeJS.Timeout | undefined;
@@ -42,7 +43,42 @@ export function activate(context: vscode.ExtensionContext) {
         }
     });
 
-    context.subscriptions.push(refreshCommand, openLogCommand);
+    const redeployCommand = vscode.commands.registerCommand('dokploy.redeploy', async (item: DokployAppItem) => {
+        if (!item || !item.app) {
+            return;
+        }
+
+        const confirm = await vscode.window.showWarningMessage(
+            `Redeploy "${item.app.name}"?`,
+            { modal: true },
+            'Redeploy'
+        );
+
+        if (confirm !== 'Redeploy') {
+            return;
+        }
+
+        await vscode.window.withProgress(
+            {
+                location: vscode.ProgressLocation.Notification,
+                title: `Redeploying ${item.app.name}...`,
+                cancellable: false
+            },
+            async () => {
+                try {
+                    const api = new DokployApi();
+                    await api.redeployApplication(item.app.applicationId);
+                    vscode.window.showInformationMessage(`✅ Redeploy triggered for "${item.app.name}"`);
+                    // Refresh after a short delay to show the new status
+                    setTimeout(() => vscode.commands.executeCommand('dokploy.refresh'), 2000);
+                } catch (error: any) {
+                    vscode.window.showErrorMessage(`❌ Redeploy failed: ${error.message}`);
+                }
+            }
+        );
+    });
+
+    context.subscriptions.push(refreshCommand, openLogCommand, redeployCommand);
 
     // Listen for configuration changes
     context.subscriptions.push(vscode.workspace.onDidChangeConfiguration(e => {

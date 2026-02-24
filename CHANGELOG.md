@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.0.7
+
+- **New:** 🚀 Redeploy button on each application (inline rocket icon)
+- **New:** Confirmation dialog before redeploying
+- **New:** Progress notification during redeploy
+- **New:** Auto-refresh after redeploy completes
+
 ## 0.0.6
 
 - **New:** Sidebar badge shows number of failed deployments on the activity bar icon

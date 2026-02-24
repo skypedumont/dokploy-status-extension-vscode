@@ -144,5 +144,7 @@ export class DokployAppItem extends DokployTreeItem {
             this.iconPath = new vscode.ThemeIcon('circle-outline');
             this.description = app.applicationStatus || 'idle';
         }
+
+        this.contextValue = 'dokployApp';
     }
 }

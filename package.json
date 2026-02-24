@@ -3,7 +3,7 @@
     "publisher": "dokploy",
     "displayName": "Dokploy Status",
     "description": "Monitor your Dokploy deployment status directly from VS Code",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "license": "MIT",
     "repository": {
         "type": "git",
@@ -70,6 +70,11 @@
             {
                 "command": "dokploy.openLog",
                 "title": "Open in Dokploy Dashboard"
+            },
+            {
+                "command": "dokploy.redeploy",
+                "title": "Redeploy Application",
+                "icon": "$(rocket)"
             }
         ],
         "menus": {
@@ -78,6 +83,13 @@
                     "command": "dokploy.refresh",
                     "when": "view == dokploy.apps",
                     "group": "navigation"
+                }
+            ],
+            "view/item/context": [
+                {
+                    "command": "dokploy.redeploy",
+                    "when": "viewItem == dokployApp",
+                    "group": "inline"
                 }
             ]
         }

@@ -99,4 +99,43 @@ export class DokployApi {
         console.log(`[DokPloy] Parsed ${projects.length} projects with ${projects.reduce((sum: number, p: any) => sum + (p.applications?.length || 0), 0)} total applications.`);
         return projects;
     }
+
+    private async post<T>(endpoint: string, body: Record<string, any>): Promise<T> {
+        if (!this.apiUrl) {
+            throw new Error('API URL is missing. Set it in Settings → dokployStatus.apiUrl');
+        }
+        if (!this.apiKey) {
+            throw new Error('API Key is missing. Set it in Settings → dokployStatus.apiKey');
+        }
+
+        const url = `${this.apiUrl}/api${endpoint}`;
+        console.log(`[DokPloy] POST: ${url}`);
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'x-api-key': this.apiKey,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        });
+
+        const data = await response.text();
+
+        if (response.ok) {
+            try {
+                return JSON.parse(data) as T;
+            } catch {
+                return {} as T; // Some endpoints return empty body on success
+            }
+        } else if (response.status === 401 || response.status === 403) {
+            throw new Error(`Unauthorized (${response.status}): Check your API Key`);
+        } else {
+            throw new Error(`API error ${response.status}: ${data}`);
+        }
+    }
+
+    public async redeployApplication(applicationId: string): Promise<void> {
+        await this.post('/application.redeploy', { applicationId });
+    }
 }
